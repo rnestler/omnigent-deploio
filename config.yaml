@@ -1,0 +1,3 @@
+# Omnigent server config. Non-secret settings only: this repo is public.
+# `accounts` login needs no settings here. Secrets are set as env vars in Cockpit.
+{}
