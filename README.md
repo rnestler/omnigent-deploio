@@ -5,27 +5,26 @@ Builds the Omnigent server image with S3 support and a baked-in `config.yaml`.
 Deploio builds it from the `Dockerfile` on `main`. To upgrade, change the image
 tag in the `Dockerfile`.
 
-This repo is public, so never commit secrets. Set them as env vars in Cockpit.
+This repo is public, so never commit secrets. They are set as env vars on the
+app.
 
 ## Deploy
 
-Everything runs in its own Deploio project, so every command passes `-p`.
-
 ```bash
-PROJECT=$DEPLOIO_ORG-omnigent
-nctl create project "$PROJECT" --wait
-nctl create postgresdatabase omnigent -p "$PROJECT" --location=nine-es34 --wait
-nctl create bucketuser omnigent -p "$PROJECT" --location=nine-es34 --wait
-nctl create bucket omnigent -p "$PROJECT" --location=nine-es34 --permissions=writer=omnigent --wait
-nctl create app omnigent -p "$PROJECT" \
-  --git-url=https://github.com/rnestler/omnigent-deploio.git \
-  --dockerfile --port=8000 --size=standard-2 --replicas=1
+nctl auth login
+DEPLOIO_ORG=<org> ./deploy.sh
 ```
 
-The first release fails until the env vars below are set. After setting or
-changing them, run `nctl update app omnigent -p "$PROJECT" --retry-release`.
+The script creates the `<org>-omnigent` project, the database, the bucket and
+the app. It fetches the credentials with nctl and generates the cookie secret,
+and asks only for the admin password and the app host. Secrets are never
+printed. They do appear in the local process list while nctl runs.
 
-## Required env vars
+Later commands need the project, for example
+`nctl logs app omnigent -p <org>-omnigent -f`. After changing env vars, run
+`nctl update app omnigent -p <org>-omnigent --retry-release`.
+
+## Env vars set by the script
 
 - `DATABASE_URL`
 - `OMNIGENT_AUTH_ENABLED` (`1`)
