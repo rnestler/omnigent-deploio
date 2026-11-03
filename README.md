@@ -9,17 +9,21 @@ This repo is public, so never commit secrets. Set them as env vars in Cockpit.
 
 ## Deploy
 
+Everything runs in its own Deploio project, so every command passes `-p`.
+
 ```bash
-nctl create postgresdatabase omnigent --location=nine-es34 --wait
-nctl create bucketuser omnigent --location=nine-es34 --wait
-nctl create bucket omnigent --location=nine-es34 --permissions=writer=omnigent --wait
-nctl create app omnigent \
+PROJECT=$DEPLOIO_ORG-omnigent
+nctl create project "$PROJECT" --wait
+nctl create postgresdatabase omnigent -p "$PROJECT" --location=nine-es34 --wait
+nctl create bucketuser omnigent -p "$PROJECT" --location=nine-es34 --wait
+nctl create bucket omnigent -p "$PROJECT" --location=nine-es34 --permissions=writer=omnigent --wait
+nctl create app omnigent -p "$PROJECT" \
   --git-url=https://github.com/rnestler/omnigent-deploio.git \
   --dockerfile --port=8000 --size=standard-2 --replicas=1
 ```
 
 The first release fails until the env vars below are set. After setting or
-changing them, run `nctl update app omnigent --retry-release`.
+changing them, run `nctl update app omnigent -p "$PROJECT" --retry-release`.
 
 ## Required env vars
 
