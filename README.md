@@ -24,6 +24,9 @@ Later commands need the project, for example
 `nctl logs app omnigent -p <org>-omnigent -f`. After changing env vars, run
 `nctl update app omnigent -p <org>-omnigent --retry-release`.
 
+The app runs on the `mini` size (512 MiB). If it runs out of memory, resize it with
+`nctl update app omnigent -p <org>-omnigent --size=standard-1`.
+
 ## Env vars set by the script
 
 - `DATABASE_URL`

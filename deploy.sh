@@ -64,7 +64,7 @@ done
 
 nctl create application "$NAME" -p "$PROJECT" \
   --git-url=https://github.com/rnestler/omnigent-deploio.git \
-  --dockerfile --port=8000 --size=standard-2 --replicas=1 \
+  --dockerfile --port=8000 --size=mini --replicas=1 \
   --env="OMNIGENT_AUTH_ENABLED=1" \
   --env="OMNIGENT_ARTIFACT_URI=s3://$BUCKET/omnigent" \
   --env="AWS_DEFAULT_REGION=us-east-1" \
