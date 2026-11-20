@@ -1,4 +1,4 @@
-FROM ghcr.io/omnigent-ai/omnigent-server:v0.22.0
+FROM ghcr.io/omnigent-ai/omnigent-server:v0.23.0
 
 # The published image has no `s3` extra. Same version range as the extra.
 RUN python -m pip install --no-cache-dir 'boto3>=1.30,<2' 'botocore>=1.30,<2' \
